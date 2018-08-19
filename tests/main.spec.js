@@ -1,10 +1,8 @@
 import chai, { expect } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
-import sinonStubPromise from 'sinon-stub-promise';
 
 chai.use(sinonChai);
-sinonStubPromise(sinon);
 
 global.fetch = require('node-fetch');
 
@@ -41,44 +39,49 @@ describe('Spotify Wrapper', () => {
   });
 
   describe('Generic Search', () => {
-    let fetchedStub;
+    let stubedStub;
+    let promise;
 
     beforeEach(() => {
-      fetchedStub = sinon.stub(global, 'fetch');
-      fetchedStub.returnsPromise();
+      stubedStub = sinon.stub(global, 'fetch');
+      promise = stubedStub.resolves({ json: (data) => ({ data }) });
     });
 
     afterEach(() => {
-      fetchedStub.restore();
+      stubedStub.restore();
     });
 
     it('should call fetch function', () => {
       const artists = search();
-      expect(fetchedStub).to.have.been.calledOnce;
-
-      fetchedStub.restore();
+      expect(stubedStub).to.have.been.calledOnce;
     });
 
     it('should receive the correct url to fetch', () => {
 
       context('passing one type', () => {
         const artists = search('Rihanna', 'artist');
-        expect(fetchedStub).to.have.been
+        expect(stubedStub).to.have.been
           .calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist');
 
         const albuns = search('Rihanna', 'album');
-        expect(fetchedStub).to.have.been
+        expect(stubedStub).to.have.been
           .calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=album');
-
-        fetchedStub.restore();
       });
 
       context('passing more than one type', () => {
-
         // const artistsAndAlbums = search('Rihanna', ['artist', 'album']);
-        // expect(fetchedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist,album');
+        // expect(stubedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist,album');
       });
+    });
 
+    it('should return the JSON Data from the Promise', () => {
+      promise.resolves({ body: 'json' });
+
+      const artists = search('Rihanna', 'artist');
+
+      artists.then((data) => {
+        expect(data).to.be.eql({ body: 'json' });
+      });
     });
   });
 });
