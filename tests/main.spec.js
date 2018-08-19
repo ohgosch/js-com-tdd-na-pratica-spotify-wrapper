@@ -16,7 +16,7 @@ describe('Spotify Wrapper', () => {
 
   beforeEach(() => {
     stubedFetch = sinon.stub(global, 'fetch');
-    promise = stubedFetch.resolves({ json: (data) => ({ data }) });
+    promise = stubedFetch.resolves({ json: data => ({ data }) });
   });
 
   afterEach(() => {
@@ -79,7 +79,7 @@ describe('Spotify Wrapper', () => {
 
       const artists = search('Rihanna', 'artist');
 
-      artists.then((data) => {
+      artists.then(data => {
         expect(data).to.be.eql({ body: 'json' });
       });
     });

@@ -1,4 +1,8 @@
-export const search = (query, type) => fetch(`https://api.spotify.com/v1/search?q=${query}&type=${type}`); // eslint-disable-line no-undef
+export const search = (query, type) => fetch(`https://api.spotify.com/v1/search?q=${query}&type=${type}`, { // eslint-disable-line no-undef
+  headers: {
+    Accept: 'application/json',
+  },
+});
 
 export const searchAlbums = query => search(query, 'album');
 
