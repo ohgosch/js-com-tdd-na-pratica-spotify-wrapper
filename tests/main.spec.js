@@ -69,8 +69,8 @@ describe('Spotify Wrapper', () => {
       });
 
       context('passing more than one type', () => {
-        // const artistsAndAlbums = search('Rihanna', ['artist', 'album']);
-        // expect(stubedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist,album');
+        const artistsAndAlbums = search('Rihanna', ['artist', 'album']);
+        expect(stubedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist,album');
       });
     });
 
