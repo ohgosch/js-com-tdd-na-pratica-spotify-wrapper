@@ -11,6 +11,18 @@ import {
 } from '../src/main';
 
 describe('Spotify Wrapper', () => {
+  let stubedFetch;
+  let promise;
+
+  beforeEach(() => {
+    stubedFetch = sinon.stub(global, 'fetch');
+    promise = stubedFetch.resolves({ json: (data) => ({ data }) });
+  });
+
+  afterEach(() => {
+    stubedFetch.restore();
+  });
+
   describe('smoke tests', () => {
     // search (genérico) - + de 1 tipo
     // searchAlbums
@@ -39,38 +51,26 @@ describe('Spotify Wrapper', () => {
   });
 
   describe('Generic Search', () => {
-    let stubedStub;
-    let promise;
-
-    beforeEach(() => {
-      stubedStub = sinon.stub(global, 'fetch');
-      promise = stubedStub.resolves({ json: (data) => ({ data }) });
-    });
-
-    afterEach(() => {
-      stubedStub.restore();
-    });
-
     it('should call fetch function', () => {
       const artists = search();
-      expect(stubedStub).to.have.been.calledOnce;
+      expect(stubedFetch).to.have.been.calledOnce;
     });
 
     it('should receive the correct url to fetch', () => {
 
       context('passing one type', () => {
         const artists = search('Rihanna', 'artist');
-        expect(stubedStub).to.have.been
+        expect(stubedFetch).to.have.been
           .calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist');
 
         const albuns = search('Rihanna', 'album');
-        expect(stubedStub).to.have.been
+        expect(stubedFetch).to.have.been
           .calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=album');
       });
 
       context('passing more than one type', () => {
         const artistsAndAlbums = search('Rihanna', ['artist', 'album']);
-        expect(stubedStub).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist,album');
+        expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist,album');
       });
     });
 
@@ -82,6 +82,66 @@ describe('Spotify Wrapper', () => {
       artists.then((data) => {
         expect(data).to.be.eql({ body: 'json' });
       });
+    });
+  });
+
+  describe('searchArtists', () => {
+    it('should call fetch function', () => {
+      const artists = searchArtists('Rihanna');
+      expect(stubedFetch).to.have.been.calledOnce;
+    });
+
+    it('should call fetch with the correct url', () => {
+      const artists = searchArtists('Rihanna');
+      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist');
+
+      const artists2 = searchArtists('Beyoncé');
+      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Beyoncé&type=artist');
+    });
+  });
+
+  describe('searchAlbums', () => {
+    it('should call fetch function', () => {
+      const albums = searchAlbums('Rihanna');
+      expect(stubedFetch).to.have.been.calledOnce;
+    });
+
+    it('should call fetch with the correct url', () => {
+      const albums = searchAlbums('Rihanna');
+      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=album');
+
+      const albums2 = searchAlbums('Beyoncé');
+      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Beyoncé&type=album');
+    });
+  });
+
+  describe('searchTracks', () => {
+    it('should call fetch function', () => {
+      const tracks = searchTracks('Rihanna');
+      expect(stubedFetch).to.have.been.calledOnce;
+    });
+
+    it('should call fetch with the correct url', () => {
+      const tracks = searchTracks('Rihanna');
+      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=track');
+
+      const tracks2 = searchTracks('Beyoncé');
+      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Beyoncé&type=track');
+    });
+  });
+
+  describe('searchPlaylists', () => {
+    it('should call fetch function', () => {
+      const playlists = searchPlaylists('Rihanna');
+      expect(stubedFetch).to.have.been.calledOnce;
+    });
+
+    it('should call fetch with the correct url', () => {
+      const playlists = searchPlaylists('Rihanna');
+      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=playlist');
+
+      const playlists2 = searchPlaylists('Beyoncé');
+      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Beyoncé&type=playlist');
     });
   });
 });
