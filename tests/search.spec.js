@@ -8,9 +8,11 @@ global.fetch = require('node-fetch');
 
 import {
   search, searchAlbums, searchArtists, searchTracks, searchPlaylists
-} from '../src/main';
+} from '../src/search';
 
-describe('Spotify Wrapper', () => {
+import { API_URL } from '../src/config';
+
+describe('Search', () => {
   let stubedFetch;
   let promise;
 
@@ -61,16 +63,16 @@ describe('Spotify Wrapper', () => {
       context('passing one type', () => {
         const artists = search('Rihanna', 'artist');
         expect(stubedFetch).to.have.been
-          .calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist');
+          .calledWith(`${API_URL}/search?q=Rihanna&type=artist`);
 
         const albuns = search('Rihanna', 'album');
         expect(stubedFetch).to.have.been
-          .calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=album');
+          .calledWith(`${API_URL}/search?q=Rihanna&type=album`);
       });
 
       context('passing more than one type', () => {
         const artistsAndAlbums = search('Rihanna', ['artist', 'album']);
-        expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist,album');
+        expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Rihanna&type=artist,album`);
       });
     });
 
@@ -93,10 +95,10 @@ describe('Spotify Wrapper', () => {
 
     it('should call fetch with the correct url', () => {
       const artists = searchArtists('Rihanna');
-      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=artist');
+      expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Rihanna&type=artist`);
 
       const artists2 = searchArtists('Beyoncé');
-      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Beyoncé&type=artist');
+      expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Beyoncé&type=artist`);
     });
   });
 
@@ -108,10 +110,10 @@ describe('Spotify Wrapper', () => {
 
     it('should call fetch with the correct url', () => {
       const albums = searchAlbums('Rihanna');
-      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=album');
+      expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Rihanna&type=album`);
 
       const albums2 = searchAlbums('Beyoncé');
-      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Beyoncé&type=album');
+      expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Beyoncé&type=album`);
     });
   });
 
@@ -123,10 +125,10 @@ describe('Spotify Wrapper', () => {
 
     it('should call fetch with the correct url', () => {
       const tracks = searchTracks('Rihanna');
-      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=track');
+      expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Rihanna&type=track`);
 
       const tracks2 = searchTracks('Beyoncé');
-      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Beyoncé&type=track');
+      expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Beyoncé&type=track`);
     });
   });
 
@@ -138,10 +140,10 @@ describe('Spotify Wrapper', () => {
 
     it('should call fetch with the correct url', () => {
       const playlists = searchPlaylists('Rihanna');
-      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Rihanna&type=playlist');
+      expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Rihanna&type=playlist`);
 
       const playlists2 = searchPlaylists('Beyoncé');
-      expect(stubedFetch).to.have.been.calledWith('https://api.spotify.com/v1/search?q=Beyoncé&type=playlist');
+      expect(stubedFetch).to.have.been.calledWith(`${API_URL}/search?q=Beyoncé&type=playlist`);
     });
   });
 });
