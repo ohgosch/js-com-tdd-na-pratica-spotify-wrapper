@@ -1,1 +1,3 @@
-export const toJSON = data => data; // eslint-disable-line import/prefer-default-export
+export const toJSON = data => (data.json // eslint-disable-line import/prefer-default-export
+  ? data.json()
+  : data);
