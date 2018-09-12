@@ -1,5 +1,8 @@
 # Spotify Wrapper
 
+[![Build Status](https://travis-ci.org/rgosch/js-com-tdd-na-pratica-spotify-wrapper.svg?branch=master)](https://travis-ci.org/rgosch/js-com-tdd-na-pratica-spotify-wrapper)
+[![Coverage Status](https://coveralls.io/repos/github/rgosch/js-com-tdd-na-pratica-spotify-wrapper/badge.svg?branch=master)](https://coveralls.io/github/rgosch/js-com-tdd-na-pratica-spotify-wrapper?branch=master)
+
 A wrapper to work with the [Spotify Web API](https://developer.spotify.com/web-api/).
 
 ## Browser Support
